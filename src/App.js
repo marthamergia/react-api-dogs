@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { React, useEffect, useState} from "react";
+import "./App.css"
+
 
 function App() {
+  const [dogs, setDogs] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("https://api.thedogapi.com/v1/images/search")
+      const newData = await response.json()
+      // console.log(newData)
+      setDogs(newData)
+    }
+    fetchData()
+  }, [])
+  console.log(dogs)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <div className="">
+      {dogs.map((taco) => {
+        const{id, breeds, url} = taco
+        
+        return(
+          <div key={id}>
+          <h2>The Dog List</h2>
+          <h3>Name: {breeds}</h3>
+          {/* <h3>Height: {height}</h3> */}
+          <img src={url} alt={breeds} />
+          <h3></h3>
+          </div>
 
-export default App;
+        )
+      })}
+      
+    </div>
+  )
+}
+export default App
